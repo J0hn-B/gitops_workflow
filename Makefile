@@ -48,8 +48,11 @@ cluster_create:
 tf_apply:
 	terraform -chdir=terraform init
 	terraform -chdir=terraform apply --auto-approve
-	@echo
-	@echo "$(GREEN) ==> Openfaas port-forward:$(NC)" kubectl port-forward -n openfaas svc/gateway 8080:8080 &
+	@echo "$(GREEN) ==> Access Openfaas web ui in:$(NC) http://localhost:8080"
+	kubectl port-forward -n openfaas svc/gateway 8080:8080 &
 
 clean:
+	
 	k3d cluster delete $(CLUSTER_NAME)
+	
+	

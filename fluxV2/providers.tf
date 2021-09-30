@@ -25,6 +25,4 @@ provider "kubernetes" {
 
 provider "flux" {}
 
-provider "kubectl" {
-  # Configuration options
-}
+provider "kubectl" {}

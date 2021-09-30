@@ -1,5 +1,5 @@
 
-# Generate manifests
+# Generate flux install manifests
 data "flux_install" "main" {
   target_path    = "clusters/my-cluster"
   network_policy = false
@@ -17,7 +17,10 @@ resource "kubernetes_namespace" "flux_system" {
   }
 }
 
-# Split multi-doc YAML with
+
+
+
+# Split multi-doc YAML with kubectl community provider
 # https://registry.terraform.io/providers/gavinbunney/kubectl/latest
 data "kubectl_file_documents" "apply" {
   content = data.flux_install.main.content
@@ -32,9 +35,19 @@ locals {
   ]
 }
 
-# Apply manifests on the cluster
+
+# Apply flux installation manifests on the cluster
 resource "kubectl_manifest" "apply" {
   for_each   = { for v in local.apply : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
   depends_on = [kubernetes_namespace.flux_system]
   yaml_body  = each.value
 }
+
+
+# Flux sync manifests
+data "flux_sync" "main" {
+  target_path = "fluxV2/clusters/dev"
+  url         = "https://github.com/J0hn-B/gitops_workflow.git"
+  branch      = "main"
+}
+

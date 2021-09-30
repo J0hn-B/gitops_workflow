@@ -23,7 +23,10 @@ terraform: code_lint \
 cluster_create \
 tf_apply
 
-
+#? Deploy with flux  ==> make flux
+flux: code_lint \
+cluster_create \
+flux_deploy
 
 #################################
 ###* Development
@@ -43,16 +46,19 @@ endif
 #? Create local cluster  ==> make cluster_create
 cluster_create:
 	CLUSTER_NAME=$(CLUSTER_NAME) ./scripts/k3d_cluster.sh 
-
-#? Deploy with terraform  ==> make tf_apply
+  
 tf_apply:
 	terraform -chdir=terraform init
 	terraform -chdir=terraform apply --auto-approve
 	@echo "$(GREEN) ==> Access Openfaas web ui in:$(NC) http://localhost:8080"
 	kubectl port-forward -n openfaas svc/gateway 8080:8080 &
 
-clean:
-	
+#? Deploy with flux  ==> make flux_deploy
+flux_deploy:
+	terraform -chdir=fluxV2 init
+	terraform -chdir=fluxV2 apply --auto-approve	
+
+clean:	
 	k3d cluster delete $(CLUSTER_NAME)
 	
 	

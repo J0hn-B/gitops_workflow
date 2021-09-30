@@ -22,6 +22,10 @@ This is a good starting point when first discovering how resources can be manage
 
 ### How to
 
+> Important: A $KUBECONFIG env variable is expected: `echo $KUBECONFIG`
+
+- > <https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#the-kubeconfig-environment-variable>
+
 Verify prerequisites have been installed and Docker Desktop is running.
 
 `git clone https://github.com/J0hn-B/gitops_workflow`

@@ -19,7 +19,6 @@ resource "kubernetes_namespace" "flux_system" {
 
 
 
-
 # Split multi-doc YAML with kubectl community provider
 # https://registry.terraform.io/providers/gavinbunney/kubectl/latest
 data "kubectl_file_documents" "apply" {

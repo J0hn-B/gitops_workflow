@@ -1,8 +1,23 @@
 # Gitops workflow
 
-This example code will deploy the openfaas helm chart using a set of different tools.
+GitOps is a way to do Kubernetes cluster management and application delivery using declarative manifests that can be treated as code.
+This example code will deploy the [openfaas](https://github.com/openfaas/faas-netes/tree/master/chart/openfaas) helm chart using a set of different tools.
 
-This is a good starting point when first discovering how resources can be managed through a gitops workflow.
+This is a good starting point when first discovering how helm charts/yaml manifests can be managed through a gitops workflow.
+
+At a glance:
+
+- terraform helm provider is used to deploy openfaas
+
+- flux operator is used to deploy openfaas
+
+- argocd operator is used to deploy openfaas
+
+Follow the "How to" instructions for single command deployment using `make`
+
+Access openfaas UI in: <http://localhost:8080/>
+
+> Note: Flux is installed using terraform flux provider as there is no helm chart available yet.
 
 ## Prerequisites
 
@@ -18,13 +33,11 @@ This is a good starting point when first discovering how resources can be manage
 - argocd
 - flux
 
-> Note: The helm chart(s) have been pulled locally, inside helm_charts folder, to simplify deployment showcase.
-
 ### How to
 
-> Important: A $KUBECONFIG env variable is expected: `echo $KUBECONFIG`
+> Important: A [$KUBECONFIG](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#the-kubeconfig-environment-variable) env variable is expected:
 
-- > <https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#the-kubeconfig-environment-variable>
+`echo $KUBECONFIG`
 
 Verify prerequisites have been installed and Docker Desktop is running.
 
@@ -32,10 +45,16 @@ Verify prerequisites have been installed and Docker Desktop is running.
 
 `cd ~/gitops_workflow`
 
-Follow the terminal for instructions on how to access openfaas ui
-
-For terraform provider:
+For terraform helm provider:
 
 - `make terraform` to deploy
 
 - `make clean` to clean up
+
+For fluxV2 operator:
+
+- `make flux` to deploy
+
+- `make clean` to clean up
+
+Follow the terminal for instructions on how to access openfaas ui

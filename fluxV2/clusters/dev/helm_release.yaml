@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: openfaas
+  namespace: openfaas
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: /chart/openfaas
+      version: "8.0.4"
+      sourceRef:
+        kind: GitRepository
+        name: openfaas
+        namespace: openfaas
+      interval: 1m
+  values:
+    functionNamespace: openfaas-fn
+    generateBasicAuth: true

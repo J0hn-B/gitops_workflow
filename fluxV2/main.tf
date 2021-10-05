@@ -42,11 +42,36 @@ resource "kubectl_manifest" "apply" {
   yaml_body  = each.value
 }
 
-
-# Flux sync manifests
-data "flux_sync" "main" {
-  target_path = "fluxV2/clusters/dev"
-  url         = "https://github.com/J0hn-B/gitops_workflow.git"
-  branch      = "main"
+# Create helm release with fluxv2
+data "kubectl_path_documents" "app_manifests" {
+  pattern = "./clusters/dev/*.yaml"
 }
 
+resource "kubectl_manifest" "app_manifests_apply" {
+  count      = length(data.kubectl_path_documents.app_manifests.documents)
+  yaml_body  = element(data.kubectl_path_documents.app_manifests.documents, count.index)
+  depends_on = [kubectl_manifest.apply]
+}
+
+resource "time_sleep" "wait_openfaas_gateway" {
+  create_duration = "180s"
+  depends_on      = [kubectl_manifest.app_manifests_apply]
+}
+
+# Return openfaas secret
+data "kubernetes_secret" "openfaas" {
+  metadata {
+    name      = "basic-auth"
+    namespace = "openfaas"
+  }
+  depends_on = [time_sleep.wait_openfaas_gateway]
+}
+
+
+output "openfaas-username" {
+  value = "admin"
+}
+
+output "openfaas-password" {
+  value = nonsensitive(data.kubernetes_secret.openfaas.data.basic-auth-password)
+}

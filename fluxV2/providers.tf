@@ -26,3 +26,5 @@ provider "kubernetes" {
 provider "flux" {}
 
 provider "kubectl" {}
+
+provider "time" {}

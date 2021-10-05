@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: openfaas
+  namespace: openfaas
+spec:
+  interval: 1m
+  url: https://github.com/openfaas/faas-netes
+  ref:
+    branch: master

@@ -56,7 +56,9 @@ tf_apply:
 #? Deploy with flux  ==> make flux_deploy
 flux_deploy:
 	terraform -chdir=fluxV2 init
-	terraform -chdir=fluxV2 apply --auto-approve	
+	terraform -chdir=fluxV2 apply --auto-approve
+	@echo "$(GREEN) ==> Access Openfaas web ui in:$(NC) http://localhost:8080"
+	kubectl port-forward -n openfaas svc/gateway 8080:8080 &	
 
 clean:	
 	k3d cluster delete $(CLUSTER_NAME)

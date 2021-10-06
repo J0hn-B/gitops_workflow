@@ -48,15 +48,15 @@ cluster_create:
 	CLUSTER_NAME=$(CLUSTER_NAME) ./scripts/k3d_cluster.sh 
   
 tf_apply:
-	terraform -chdir=terraform init
-	terraform -chdir=terraform apply --auto-approve
+	terraform -chdir=terraform_helm_provider init
+	terraform -chdir=terraform_helm_provider apply --auto-approve
 	@echo "$(GREEN) ==> Access Openfaas web ui in:$(NC) http://localhost:8080"
 	kubectl port-forward -n openfaas svc/gateway 8080:8080 &
 
 #? Deploy with flux  ==> make flux_deploy
 flux_deploy:
-	terraform -chdir=fluxV2 init
-	terraform -chdir=fluxV2 apply --auto-approve
+	terraform -chdir=flux_v2 init
+	terraform -chdir=flux_v2 apply --auto-approve
 	@echo "$(GREEN) ==> Access Openfaas web ui in:$(NC) http://localhost:8080"
 	kubectl port-forward -n openfaas svc/gateway 8080:8080 &	
 

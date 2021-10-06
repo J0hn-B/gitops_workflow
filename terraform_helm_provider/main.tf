@@ -16,7 +16,7 @@ resource "kubernetes_namespace" "openfaas-fn" {
 # Create helm release
 resource "helm_release" "openfaas_v8_0_4" {
   name      = "openfaas-8.0.4"
-  chart     = "../helm_charts/openfaas-8.0.4.tgz"
+  chart     = "./helm_charts/openfaas-8.0.4.tgz"
   namespace = "openfaas"
   timeout   = 600
 

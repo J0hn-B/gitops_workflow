@@ -1,5 +1,4 @@
 
-
 # Create namespace
 resource "kubernetes_namespace" "openfaas" {
   metadata {
@@ -14,7 +13,7 @@ resource "kubernetes_namespace" "openfaas-fn" {
   }
 }
 
-# Create release
+# Create helm release
 resource "helm_release" "openfaas_v8_0_4" {
   name      = "openfaas-8.0.4"
   chart     = "../helm_charts/openfaas-8.0.4.tgz"
@@ -32,6 +31,7 @@ resource "helm_release" "openfaas_v8_0_4" {
   }
 }
 
+# Return openfaas secret
 data "kubernetes_secret" "openfaas" {
   metadata {
     name      = "basic-auth"
@@ -40,6 +40,7 @@ data "kubernetes_secret" "openfaas" {
   depends_on = [helm_release.openfaas_v8_0_4]
 }
 
+# Credentials to access openfaas UI
 output "openfaas-username" {
   value = "admin"
 }

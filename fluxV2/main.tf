@@ -53,6 +53,7 @@ resource "kubectl_manifest" "app_manifests_apply" {
   depends_on = [kubectl_manifest.apply]
 }
 
+# Wait for openfaas fateway to become available
 resource "time_sleep" "wait_openfaas_gateway" {
   create_duration = "180s"
   depends_on      = [kubectl_manifest.app_manifests_apply]
@@ -67,7 +68,7 @@ data "kubernetes_secret" "openfaas" {
   depends_on = [time_sleep.wait_openfaas_gateway]
 }
 
-
+# Credentials to access openfaas UI
 output "openfaas-username" {
   value = "admin"
 }

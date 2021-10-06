@@ -28,6 +28,11 @@ flux: code_lint \
 cluster_create \
 flux_deploy
 
+#? Deploy with argocd  ==> make argocd
+argocd: code_lint \
+cluster_create \
+argocd_deploy
+
 #################################
 ###* Development
 #################################  
@@ -53,12 +58,17 @@ tf_apply:
 	@echo "$(GREEN) ==> Access Openfaas web ui in:$(NC) http://localhost:8080"
 	kubectl port-forward -n openfaas svc/gateway 8080:8080 &
 
-#? Deploy with flux  ==> make flux_deploy
 flux_deploy:
 	terraform -chdir=flux_v2 init
 	terraform -chdir=flux_v2 apply --auto-approve
 	@echo "$(GREEN) ==> Access Openfaas web ui in:$(NC) http://localhost:8080"
 	kubectl port-forward -n openfaas svc/gateway 8080:8080 &	
+
+argocd_deploy:
+	terraform -chdir=argo_cd init
+	terraform -chdir=argo_cd apply --auto-approve
+
+
 
 clean:	
 	k3d cluster delete $(CLUSTER_NAME)

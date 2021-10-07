@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openfaas
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: "https://openfaas.github.io/faas-netes"
+    targetRevision: 8.0.4
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: "functionNamespace"
+          value: "openfaas-fn"
+        - name: "generateBasicAuth"
+          value: "true"
+          forceString: true # ensures that value is treated as a string
+    chart: openfaas
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: openfaas
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -57,4 +57,10 @@ For fluxV2 operator:
 
 - `make clean` to clean up
 
+For argocd operator:
+
+- `make argocd` to deploy
+
+- `make clean` to clean up
+
 Follow the terminal for instructions on how to access openfaas ui

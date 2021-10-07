@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "1.11.3"
+    }
+  }
+}
 # A $KUBECONFIG env variable is expected: echo $KUBECONFIG 
 # # <https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#the-kubeconfig-environment-variable>
 
@@ -16,3 +24,5 @@ provider "helm" {
     config_path = data.external.kube_path.result.KUBECONFIG
   }
 }
+
+provider "kubectl" {}

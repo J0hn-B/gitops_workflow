@@ -47,19 +47,19 @@ Verify prerequisites have been installed and Docker Desktop is running.
 
 `cd ~/gitops_workflow`
 
-For terraform helm provider:
+For [**terraform helm provider**](https://registry.terraform.io/providers/hashicorp/helm/latest/docs):
 
 - `make terraform` to deploy
 
 - `make clean` to clean up
 
-For fluxV2 operator:
+For [**flux_V2**](https://fluxcd.io/docs/) operator:
 
 - `make flux` to deploy
 
 - `make clean` to clean up
 
-For argocd operator:
+For [**argocd**](https://argo-cd.readthedocs.io/en/stable/) operator:
 
 - `make argocd` to deploy
 

@@ -25,7 +25,7 @@ resource "helm_release" "argocd_install" {
 }
 
 
-# Create helm release with fluxv2
+# Apply argocd application manifests
 data "kubectl_path_documents" "app_manifests" {
   pattern = "./clusters/dev/*.yaml"
 }
@@ -36,13 +36,19 @@ resource "kubectl_manifest" "app_manifests_apply" {
   depends_on = [helm_release.argocd_install]
 }
 
+# Wait for openfaas gateway to become available
+resource "time_sleep" "wait_openfaas_gateway" {
+  create_duration = "180s"
+  depends_on      = [kubectl_manifest.app_manifests_apply]
+}
+
 # Return openfaas secret
 data "kubernetes_secret" "openfaas" {
   metadata {
     name      = "basic-auth"
     namespace = "openfaas"
   }
-  depends_on = [kubectl_manifest.app_manifests_apply]
+  depends_on = [time_sleep.wait_openfaas_gateway]
 }
 
 # Credentials to access openfaas UI

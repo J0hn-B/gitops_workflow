@@ -26,3 +26,5 @@ provider "helm" {
 }
 
 provider "kubectl" {}
+
+provider "time" {}

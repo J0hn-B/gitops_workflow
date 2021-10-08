@@ -77,6 +77,8 @@ To access argocd web ui:
 
 - Username: `admin`
 
-- Get argocd password: `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
+- Get argocd password:
+
+`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 
 ![image](https://user-images.githubusercontent.com/40946247/136553421-efe401c9-aa33-4246-9a54-e6bfe19d0b71.png)
